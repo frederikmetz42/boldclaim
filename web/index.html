@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bold Claim</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        display: ['Sora', 'system-ui', 'sans-serif'],
+        brand: ['Archivo Black', 'Impact', 'sans-serif'],
+      },
+      colors: {
+        navy: '#1a2744',
+      }
+    }
+  }
+}
+</script>
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: fadeUp 0.35s ease forwards;
+  }
+  .cfg-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 0.4rem 2rem 0.4rem 0.85rem;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 12px;
+    transition: all 0.15s;
+  }
+  .cfg-select:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .cfg-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
+  }
+</style>
+</head>
+<body class="bg-[#f8fafc] text-gray-800 min-h-screen font-sans antialiased">
+
+<!-- Top Bar -->
+<header class="border-b border-gray-200 bg-white/80 backdrop-blur sticky top-0 z-10">
+  <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between">
+    <span class="font-brand text-navy tracking-tight text-xl uppercase">Bold Claim</span>
+    <div class="flex gap-1">
+      <button onclick="setLang('de')" id="lang-de" class="px-3 py-1 text-xs font-semibold rounded-full transition-all bg-blue-600 text-white">DE</button>
+      <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 text-xs font-semibold rounded-full transition-all bg-gray-100 text-gray-500 hover:bg-gray-200">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-5 pb-16">
+
+  <!-- Hero -->
+  <section class="text-center pt-10 pb-6">
+    <h1 id="hero-title" class="font-display text-navy text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">Fakten gegen Desinformation</h1>
+    <p id="hero-sub" class="text-gray-400 mt-2.5 text-base max-w-md mx-auto">Behauptung einfügen. Quellenbasierten Konter erhalten.</p>
+  </section>
+
+  <!-- Mode Cards -->
+  <section id="modes-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+    <!-- rendered by JS -->
+  </section>
+
+  <!-- Compact Settings Row -->
+  <section class="mb-5">
+    <div class="flex flex-wrap gap-2">
+      <select id="cfg-platform" class="cfg-select"></select>
+      <select id="cfg-tone" class="cfg-select"></select>
+      <select id="cfg-goal" class="cfg-select"></select>
+    </div>
+  </section>
+
+  <!-- Input Area -->
+  <section class="mb-5">
+    <label id="input-label" class="block text-sm font-medium text-gray-500 mb-1.5">Kommentar einfügen</label>
+    <textarea id="input-text" rows="5" class="w-full rounded-xl border border-gray-200 bg-white shadow-sm px-4 py-3 text-base text-gray-800 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y transition font-sans" placeholder="Kopiere den Kommentar hier rein..."></textarea>
+  </section>
+
+  <!-- Submit -->
+  <button id="submit-btn" onclick="handleSubmit()" class="w-full py-3.5 rounded-xl bg-navy text-white font-display font-semibold text-base hover:bg-[#243556] active:bg-[#0f1a2e] transition disabled:bg-gray-300 disabled:cursor-not-allowed">
+    Konter generieren
+  </button>
+
+  <!-- Error -->
+  <div id="error-msg" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600"></div>
+
+  <!-- Results -->
+  <div id="results" class="mt-8 space-y-4 hidden">
+    <div class="bg-white rounded-xl shadow-sm border-l-4 border-blue-600 p-5">
+      <p id="response-label" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Antwort</p>
+      <div id="reply-text" class="text-base text-gray-800 leading-relaxed whitespace-pre-wrap"></div>
+      <div class="flex justify-end mt-4">
+        <button id="copy-btn" onclick="copyReply()" class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:border-gray-300 transition">Kopieren</button>
+      </div>
+    </div>
+    <div id="sources-section" class="bg-white rounded-xl shadow-sm p-5">
+      <p id="sources-label" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Quellen aus der Datenbank</p>
+      <ul id="sources-list" class="space-y-2"></ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="text-center py-8 text-xs text-gray-300">
+  <span id="footer-text">Bold Claim &middot; Faktenbasierte Gegenrede &middot; Open Source</span>
+</footer>
+
+<script>
+(function(){
+
+  var API_URL = 'https://counter-speech.proof-machine.workers.dev';
+
+  // --- Translations ---
+
+  var T = {
+    de: {
+      hero_title: 'Fakten gegen Desinformation',
+      hero_sub: 'Behauptung einf\u00fcgen. Quellenbasierten Konter erhalten.',
+      modes: {
+        reply:        { name: 'Antwort',        desc: 'Analysiert Behauptungen, generiert quellenbasierte Antwort',            icon: '\u{1F4AC}' },
+        factcheck:    { name: 'Faktencheck',     desc: 'Nur Fakten. Claim \u2192 Wahr/Falsch \u2192 Quelle',                    icon: '\u{2705}' },
+        deescalation: { name: 'De-Eskalation',   desc: 'Ziel: Beruhigen, nicht gewinnen. F\u00fcr wichtige Beziehungen',         icon: '\u{1F54A}\u{FE0F}' },
+      },
+      labels: {
+        reply: 'Kommentar einf\u00fcgen',
+        factcheck: 'Behauptung einf\u00fcgen',
+        deescalation: 'Kommentar einf\u00fcgen (von jemandem der dir wichtig ist)',
+      },
+      placeholders: {
+        reply: 'Kopiere den Kommentar hier rein...',
+        factcheck: 'Kopiere die Behauptung(en) hier rein...',
+        deescalation: 'Kopiere den Kommentar hier rein...',
+      },
+      submit: 'Konter generieren',
+      submit_loading: 'Suche Konter + generiere Antwort\u2026',
+      response_label: 'Antwort',
+      sources_label: 'Quellen aus der Datenbank',
+      copy: 'Kopieren',
+      copied: 'Kopiert!',
+      footer: 'Bold Claim \u00b7 Faktenbasierte Gegenrede \u00b7 Open Source',
+      error_prefix: 'Fehler: ',
+      demo_msg: '[Demo] Backend nicht konfiguriert.\n\nSobald der Cloudflare Worker deployed ist, wird hier eine KI-generierte Antwort erscheinen, basierend auf semantischer Suche \u00fcber 51 Konter-Dateien.\n\nSiehe web/setup.md f\u00fcr die Einrichtung.',
+      demo_source: 'Pinecone-Suche liefert hier die 5 relevantesten Konter',
+      no_reply: 'Keine Antwort generiert.',
+      platforms: [
+        { value: '', label: 'Plattform' },
+        { value: 'twitter', label: 'Twitter / X' },
+        { value: 'reddit', label: 'Reddit' },
+        { value: 'whatsapp', label: 'WhatsApp' },
+        { value: 'mastodon', label: 'Mastodon' },
+        { value: 'forum', label: 'Forum' },
+        { value: 'face-to-face', label: 'Gespr\u00e4ch' },
+      ],
+      goals: [
+        { value: '', label: 'Ziel' },
+        { value: 'lurkers', label: 'Mitleser \u00fcberzeugen' },
+        { value: 'deescalate', label: 'De-eskalieren' },
+        { value: 'factcheck', label: 'Faktencheck' },
+        { value: 'expose', label: 'Taktik entlarven' },
+      ],
+      tones: [
+        { value: '', label: 'Tonfall' },
+        { value: 'sharp', label: 'Scharf' },
+        { value: 'calm', label: 'Sachlich' },
+        { value: 'empathetic', label: 'Empathisch' },
+        { value: 'ironic', label: 'Ironisch' },
+      ],
+    },
+    en: {
+      hero_title: 'Facts Against Disinformation',
+      hero_sub: 'Paste a claim. Get a sourced counter-argument.',
+      modes: {
+        reply:        { name: 'Reply',          desc: 'Analyses claims, generates a sourced counter-response',               icon: '\u{1F4AC}' },
+        factcheck:    { name: 'Fact Check',      desc: 'Just facts. Claim \u2192 True/False \u2192 Source',                   icon: '\u{2705}' },
+        deescalation: { name: 'De-escalation',   desc: 'Goal: calm down, not win. For important relationships',               icon: '\u{1F54A}\u{FE0F}' },
+      },
+      labels: {
+        reply: 'Paste the comment',
+        factcheck: 'Paste the claim',
+        deescalation: 'Paste the comment (from someone you care about)',
+      },
+      placeholders: {
+        reply: 'Paste the comment here...',
+        factcheck: 'Paste the claim(s) here...',
+        deescalation: 'Paste the comment here...',
+      },
+      submit: 'Generate counter',
+      submit_loading: 'Searching + generating response\u2026',
+      response_label: 'Response',
+      sources_label: 'Sources from database',
+      copy: 'Copy',
+      copied: 'Copied!',
+      footer: 'Bold Claim \u00b7 Fact-based counter-arguments \u00b7 Open Source',
+      error_prefix: 'Error: ',
+      demo_msg: '[Demo] Backend not configured.\n\nOnce the Cloudflare Worker is deployed, an AI-generated response will appear here, based on semantic search across 51 counter-argument files.\n\nSee web/setup.md for setup instructions.',
+      demo_source: 'Pinecone search returns the 5 most relevant counters here',
+      no_reply: 'No response generated.',
+      platforms: [
+        { value: '', label: 'Platform' },
+        { value: 'twitter', label: 'Twitter / X' },
+        { value: 'reddit', label: 'Reddit' },
+        { value: 'whatsapp', label: 'WhatsApp' },
+        { value: 'mastodon', label: 'Mastodon' },
+        { value: 'forum', label: 'Forum' },
+        { value: 'face-to-face', label: 'Face to face' },
+      ],
+      goals: [
+        { value: '', label: 'Goal' },
+        { value: 'lurkers', label: 'Convince onlookers' },
+        { value: 'deescalate', label: 'De-escalate' },
+        { value: 'factcheck', label: 'Fact-check only' },
+        { value: 'expose', label: 'Expose tactics' },
+      ],
+      tones: [
+        { value: '', label: 'Tone' },
+        { value: 'sharp', label: 'Sharp' },
+        { value: 'calm', label: 'Calm' },
+        { value: 'empathetic', label: 'Empathetic' },
+        { value: 'ironic', label: 'Ironic' },
+      ],
+    }
+  };
+
+  var modeOrder = ['reply', 'factcheck', 'deescalation'];
+  var currentMode = 'reply';
+  var currentLang = 'de';
+
+  // --- DOM refs ---
+
+  var heroTitle     = document.getElementById('hero-title');
+  var heroSub       = document.getElementById('hero-sub');
+  var modesGrid     = document.getElementById('modes-grid');
+  var inputLabel    = document.getElementById('input-label');
+  var inputText     = document.getElementById('input-text');
+  var submitBtn     = document.getElementById('submit-btn');
+  var resultsEl     = document.getElementById('results');
+  var replyEl       = document.getElementById('reply-text');
+  var sourcesListEl = document.getElementById('sources-list');
+  var sourcesSectionEl = document.getElementById('sources-section');
+  var errorEl       = document.getElementById('error-msg');
+  var copyBtn       = document.getElementById('copy-btn');
+  var responseLabel = document.getElementById('response-label');
+  var sourcesLabel  = document.getElementById('sources-label');
+  var footerText    = document.getElementById('footer-text');
+  var langDe        = document.getElementById('lang-de');
+  var langEn        = document.getElementById('lang-en');
+  var cfgPlatform   = document.getElementById('cfg-platform');
+  var cfgGoal       = document.getElementById('cfg-goal');
+  var cfgTone       = document.getElementById('cfg-tone');
+
+  // --- Render mode cards ---
+
+  function renderModes() {
+    var t = T[currentLang];
+    while (modesGrid.firstChild) modesGrid.removeChild(modesGrid.firstChild);
+    modeOrder.forEach(function(key) {
+      var m = t.modes[key];
+      var isActive = key === currentMode;
+      var card = document.createElement('button');
+      card.className = 'text-left p-4 rounded-xl border-2 transition-all cursor-pointer ' +
+        (isActive
+          ? 'border-blue-500 bg-blue-50'
+          : 'border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm');
+      card.setAttribute('data-mode', key);
+
+      var iconDiv = document.createElement('div');
+      iconDiv.className = 'text-2xl mb-1';
+      iconDiv.textContent = m.icon;
+
+      var nameDiv = document.createElement('div');
+      nameDiv.className = 'font-display font-semibold text-sm text-gray-800';
+      nameDiv.textContent = m.name;
+
+      var descDiv = document.createElement('div');
+      descDiv.className = 'text-xs text-gray-400 mt-0.5 leading-snug';
+      descDiv.textContent = m.desc;
+
+      card.appendChild(iconDiv);
+      card.appendChild(nameDiv);
+      card.appendChild(descDiv);
+
+      card.addEventListener('click', function() {
+        selectMode(key);
+      });
+      modesGrid.appendChild(card);
+    });
+  }
+
+  function selectMode(mode) {
+    currentMode = mode;
+    renderModes();
+    updateInputArea();
+    resultsEl.classList.add('hidden');
+    resultsEl.classList.remove('animate-fade-up');
+    errorEl.classList.add('hidden');
+  }
+
+  function updateInputArea() {
+    var t = T[currentLang];
+    inputLabel.textContent = t.labels[currentMode] || t.labels.reply;
+    inputText.placeholder = t.placeholders[currentMode] || t.placeholders.reply;
+  }
+
+  // --- Compact select dropdowns ---
+
+  function populateSelect(selectEl, options, currentValue) {
+    while (selectEl.firstChild) selectEl.removeChild(selectEl.firstChild);
+    options.forEach(function(opt) {
+      var o = document.createElement('option');
+      o.value = opt.value;
+      o.textContent = opt.label;
+      selectEl.appendChild(o);
+    });
+    if (currentValue !== undefined) selectEl.value = currentValue;
+  }
+
+  function updateSelects() {
+    var t = T[currentLang];
+    populateSelect(cfgPlatform, t.platforms, cfgPlatform.value);
+    populateSelect(cfgGoal, t.goals, cfgGoal.value);
+    populateSelect(cfgTone, t.tones, cfgTone.value);
+  }
+
+  // --- Language switching ---
+
+  window.setLang = function(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    var t = T[lang];
+
+    if (lang === 'de') {
+      langDe.className = 'px-3 py-1 text-xs font-semibold rounded-full transition-all bg-blue-600 text-white';
+      langEn.className = 'px-3 py-1 text-xs font-semibold rounded-full transition-all bg-gray-100 text-gray-500 hover:bg-gray-200';
+    } else {
+      langEn.className = 'px-3 py-1 text-xs font-semibold rounded-full transition-all bg-blue-600 text-white';
+      langDe.className = 'px-3 py-1 text-xs font-semibold rounded-full transition-all bg-gray-100 text-gray-500 hover:bg-gray-200';
+    }
+
+    heroTitle.textContent = t.hero_title;
+    heroSub.textContent = t.hero_sub;
+    responseLabel.textContent = t.response_label;
+    sourcesLabel.textContent = t.sources_label;
+    copyBtn.textContent = t.copy;
+    submitBtn.textContent = t.submit;
+    footerText.textContent = t.footer;
+
+    renderModes();
+    updateInputArea();
+    updateSelects();
+  };
+
+  // --- Submit ---
+
+  window.handleSubmit = async function() {
+    var text = inputText.value.trim();
+    if (!text) return;
+
+    var t = T[currentLang];
+    var platform = cfgPlatform.value;
+    var goal = cfgGoal.value;
+    var tone = cfgTone.value;
+
+    submitBtn.disabled = true;
+    submitBtn.classList.remove('bg-navy', 'hover:bg-[#243556]', 'active:bg-[#0f1a2e]');
+    submitBtn.classList.add('bg-gray-400');
+    submitBtn.textContent = t.submit_loading;
+    resultsEl.classList.add('hidden');
+    resultsEl.classList.remove('animate-fade-up');
+    errorEl.classList.add('hidden');
+
+    if (!API_URL) {
+      setTimeout(function() {
+        replyEl.textContent = t.demo_msg;
+        while (sourcesListEl.firstChild) sourcesListEl.removeChild(sourcesListEl.firstChild);
+        var li = document.createElement('li');
+        li.className = 'flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-500';
+        li.textContent = t.demo_source;
+        sourcesListEl.appendChild(li);
+        showResults();
+        resetButton();
+      }, 800);
+      return;
+    }
+
+    try {
+      var res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: currentMode, text: text, platform: platform, goal: goal, tone: tone, lang: currentLang })
+      });
+      var data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      replyEl.textContent = data.reply || t.no_reply;
+
+      while (sourcesListEl.firstChild) sourcesListEl.removeChild(sourcesListEl.firstChild);
+      if (data.sources && data.sources.length > 0) {
+        sourcesSectionEl.style.display = '';
+        data.sources.forEach(function(s) {
+          var li = document.createElement('li');
+          li.className = 'flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg text-sm';
+          var fileSpan = document.createElement('span');
+          fileSpan.className = 'text-gray-600 truncate mr-3';
+          fileSpan.textContent = s.file + (s.section ? ' #' + s.section : '');
+          var scoreSpan = document.createElement('span');
+          scoreSpan.className = 'text-blue-600 font-semibold whitespace-nowrap';
+          scoreSpan.textContent = Math.round(s.score * 100) + '%';
+          li.appendChild(fileSpan);
+          li.appendChild(scoreSpan);
+          sourcesListEl.appendChild(li);
+        });
+      } else {
+        sourcesSectionEl.style.display = 'none';
+      }
+
+      showResults();
+    } catch(err) {
+      errorEl.textContent = t.error_prefix + err.message;
+      errorEl.classList.remove('hidden');
+    }
+
+    resetButton();
+  };
+
+  function showResults() {
+    resultsEl.classList.remove('hidden');
+    resultsEl.classList.add('animate-fade-up');
+    copyBtn.classList.remove('bg-green-50', 'text-green-600', 'border-green-200');
+    copyBtn.textContent = T[currentLang].copy;
+  }
+
+  function resetButton() {
+    var t = T[currentLang];
+    submitBtn.disabled = false;
+    submitBtn.classList.add('bg-navy', 'hover:bg-[#243556]', 'active:bg-[#0f1a2e]');
+    submitBtn.classList.remove('bg-gray-400');
+    submitBtn.textContent = t.submit;
+  }
+
+  // --- Copy ---
+
+  window.copyReply = function() {
+    var t = T[currentLang];
+    var text = replyEl.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      copyBtn.textContent = t.copied;
+      copyBtn.classList.add('bg-green-50', 'text-green-600', 'border-green-200');
+      setTimeout(function() {
+        copyBtn.classList.remove('bg-green-50', 'text-green-600', 'border-green-200');
+        copyBtn.textContent = t.copy;
+      }, 2000);
+    });
+  };
+
+  // --- Init ---
+
+  setLang('de');
+
+})();
+</script>
+</body>
+</html>
