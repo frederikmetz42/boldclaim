@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bold Claim</title>
+<link rel="icon" type="image/png" href="image2.png">
+<link rel="apple-touch-icon" href="image2.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -66,7 +68,10 @@ tailwind.config = {
 <!-- Top Bar -->
 <header class="border-b border-gray-200 bg-white/80 backdrop-blur sticky top-0 z-10">
   <div class="max-w-3xl mx-auto px-5 py-3 flex items-center justify-between">
-    <span class="font-brand text-navy tracking-tight text-xl uppercase">Bold Claim</span>
+    <div class="flex items-center gap-2">
+      <img src="image2.png" alt="" class="h-8 w-8">
+      <span class="font-brand text-navy tracking-tight text-xl uppercase">Bold Claim</span>
+    </div>
     <div class="flex gap-1">
       <button onclick="setLang('de')" id="lang-de" class="px-3 py-1 text-xs font-semibold rounded-full transition-all bg-blue-600 text-white">DE</button>
       <button onclick="setLang('en')" id="lang-en" class="px-3 py-1 text-xs font-semibold rounded-full transition-all bg-gray-100 text-gray-500 hover:bg-gray-200">EN</button>
