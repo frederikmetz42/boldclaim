@@ -127,7 +127,8 @@ Generiere deine Antwort.`;
 };
 
 async function searchPinecone(env, query) {
-  const res = await fetch(`${env.PINECONE_HOST}/records/namespaces/default/search`, {
+  const host = env.PINECONE_HOST.startsWith('https://') ? env.PINECONE_HOST : `https://${env.PINECONE_HOST}`;
+  const res = await fetch(`${host}/records/namespaces/default/search`, {
     method: 'POST',
     headers: {
       'Api-Key': env.PINECONE_API_KEY,
