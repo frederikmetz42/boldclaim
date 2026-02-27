@@ -1,12 +1,13 @@
 /**
- * Counter-Speech API Worker
+ * Bold Claim API Worker
  * Deploy to Cloudflare Workers (free tier)
  *
  * Environment variables needed:
  *   PINECONE_API_KEY  - from app.pinecone.io
  *   PINECONE_INDEX    - "counter-speech"
  *   PINECONE_HOST     - your index host URL (from Pinecone dashboard)
- *   GEMINI_API_KEY    - from aistudio.google.com (free tier: 15 RPM, 1M tokens/day)
+ *
+ * LLM: Cloudflare Workers AI (built-in, no extra key needed)
  */
 
 const CORS = {
@@ -111,8 +112,8 @@ ${text}
 ---
 Generiere deine Antwort.`;
 
-      // Step 3: Call Gemini Flash
-      const reply = await callGemini(env, systemPrompt, userPrompt);
+      // Step 3: Call Cloudflare Workers AI
+      const reply = await callWorkersAI(env, systemPrompt, userPrompt);
 
       // Step 4: Return results
       const sources = konters.map(k => ({ file: k.file, section: k.section, score: k.score }));
@@ -150,27 +151,21 @@ async function searchPinecone(env, query) {
   }));
 }
 
-async function callGemini(env, systemPrompt, userPrompt) {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: [{ parts: [{ text: userPrompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-      })
-    }
-  );
+async function callWorkersAI(env, systemPrompt, userPrompt) {
+  const res = await env.AI.run('@cf/meta/llama-3.3-70b-instruct-fp8-fast', {
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ],
+    temperature: 0.7,
+    max_tokens: 2048
+  });
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error('Gemini error: ' + err);
+  if (!res?.response) {
+    throw new Error('Workers AI: keine Antwort');
   }
 
-  const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Keine Antwort generiert.';
+  return res.response;
 }
 
 function json(data, status = 200) {
