@@ -1,0 +1,6 @@
+.DS_Store
+_internal/
+archive/
+input/
+web/.wrangler/
+CLAUDE-PROJECT-INSTRUCTIONS.md

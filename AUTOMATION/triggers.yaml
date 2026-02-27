@@ -1,0 +1,226 @@
+# Bullshit Bingo - Trigger Keywords für Automatisierung
+# Format: keyword → file#section
+
+# ==================
+# AfD & Rechtsextremismus
+# ==================
+
+afd:
+  - "nazi": "afd-und-rechts#Höcke ist Faschist - Gerichtsurteil"
+  - "faschist": "afd-und-rechts#Höcke ist Faschist - Gerichtsurteil"
+  - "höcke": "afd-und-rechts#Höcke ist Faschist - Gerichtsurteil"
+  - "remigration": "afd-und-rechts#Potsdam-Treffen Remigration"
+  - "potsdam": "afd-und-rechts#Potsdam-Treffen Remigration"
+  - "sellner": "afd-und-rechts#Potsdam-Treffen Remigration"
+  - "verfassungsschutz": "afd-und-rechts#Verfassungsschutz-Einstufung Timeline"
+  - "beobachtung": "afd-und-rechts#Verfassungsschutz-Einstufung Timeline"
+  - "schießbefehl": "afd-und-rechts#Schießbefehl auf Flüchtlinge"
+  - "grenze": "afd-und-rechts#Schießbefehl auf Flüchtlinge"
+  - "russland": "afd-und-rechts#AfD-Russland Connections"
+  - "bystron": "afd-und-rechts#AfD-Russland Connections"
+  - "krah": "afd-und-rechts#AfD-Russland Connections"
+  - "demo": "afd-und-rechts#Demos wirken - Historische Beweise"
+  - "protest": "afd-und-rechts#Demos wirken - Historische Beweise"
+  - "vs links": "verfassungsschutz-verteidigung#Warum der VS historisch RECHTS-blind ist"
+  - "vs unterwandert": "verfassungsschutz-verteidigung#Warum der VS historisch RECHTS-blind ist"
+  - "maaßen": "verfassungsschutz-verteidigung#Maaßen - Der rechte Ex-Chef"
+  - "nsu": "verfassungsschutz-verteidigung#NSU-Skandal"
+  - "npd verbot": "verfassungsschutz-verteidigung#NPD-Verbot gescheitert"
+  - "kramer": "verfassungsschutz-verteidigung#Kramer Thüringen"
+  - "antifa vs": "verfassungsschutz-verteidigung#LfV Niedersachsen Antifa-Tweet"
+  - "bevölkerungsaustausch": "verfassungsschutz-verteidigung#Bevölkerungsaustausch entlarven"
+  - "großer austausch": "verfassungsschutz-verteidigung#Bevölkerungsaustausch entlarven"
+  - "völkisch": "verfassungsschutz-verteidigung#Völkischer Nationalismus universell"
+
+# ==================
+# Migration
+# ==================
+
+migration:
+  - "kriminalität": "migration-fakten#Kriminalstatistik richtig lesen"
+  - "vergewaltigung": "migration-fakten#Kriminalstatistik richtig lesen"
+  - "sexualdelikt": "migration-fakten#Kriminalstatistik richtig lesen"
+  - "überrepräsentiert": "migration-fakten#Überrepräsentation verstehen"
+  - "krimineller": "migration-fakten#Überrepräsentation verstehen"
+  - "sozialsystem": "migration-fakten#Wirtschaftlicher Beitrag"
+  - "tasche": "migration-fakten#Wirtschaftlicher Beitrag"
+  - "sozialleistung": "migration-fakten#Wirtschaftlicher Beitrag"
+  - "job": "migration-fakten#Arbeitsmarkt"
+  - "arbeit": "migration-fakten#Arbeitsmarkt"
+  - "fachkräfte": "migration-fakten#Fachkräftemangel-Realität"
+  - "integration": "migration-fakten#Integration funktioniert"
+
+# ==================
+# Russland & Ukraine
+# ==================
+
+russland:
+  - "nato versprochen": "russland-ukraine#NATO-Osterweiterung Mythos"
+  - "nato osterweiterung": "russland-ukraine#NATO-Osterweiterung Mythos"
+  - "gorbatschow": "russland-ukraine#NATO-Osterweiterung Mythos"
+  - "krim": "russland-ukraine#Krim-Timeline"
+  - "referendum": "russland-ukraine#Krim-Timeline"
+  - "budapest": "russland-ukraine#Budapest Memorandum"
+  - "butscha": "russland-ukraine#Butscha und Kriegsverbrechen"
+  - "inszeniert": "russland-ukraine#Butscha und Kriegsverbrechen"
+  - "irak": "russland-ukraine#Whataboutism-Killer"
+  - "usa auch": "russland-ukraine#Whataboutism-Killer"
+  - "propaganda": "russland-ukraine#Kreml-Propaganda verstehen"
+  - "alle lügen": "russland-ukraine#Kreml-Propaganda verstehen"
+  - "nato eigentor": "russland-ukraine#NATO-Erweiterung Putins größter Eigentor"
+  - "russland gewinnt": "russland-ukraine#Russland hat strategisch VERLOREN"
+  - "russland wirtschaft": "russland-ukraine#Russlands Wirtschaft Kriegsblase statt Boom"
+  - "brain drain russland": "russland-ukraine#Brain-Drain Russlands Fachkräfte fliehen"
+  - "china russland": "russland-ukraine#Chinas Juniorpartner"
+  - "energiemarkt": "russland-ukraine#Europäischer Energiemarkt Dauerhaft verloren"
+
+# ==================
+# CDU & Merz
+# ==================
+
+cdu:
+  - "merz": "merz-und-cdu#Merz gefährdet..."
+  - "grundsicherung": "merz-und-cdu#Grundsicherung kostet MEHR"
+  - "bürgergeld": "merz-und-cdu#Grundsicherung kostet MEHR"
+  - "heizungsgesetz": "heizungsgesetz-betrug#Was ist passiert"
+  - "heiz-hammer": "heizungsgesetz-betrug#Die Kampagne gegen Habeck Ein Rückblick"
+  - "habeck heizung": "heizungsgesetz-betrug#Die Kampagne gegen Habeck Ein Rückblick"
+  - "wärmepumpe": "heizungsgesetz-betrug#Wärmepumpen-Mythen Faktencheck"
+  - "gasheizung": "heizungsgesetz-betrug#Die Kostenfalle Gas Was auf Mieter zukommt"
+  - "gasnetz": "heizungsgesetz-betrug#Die Gasnetz-Todesspirale"
+  - "65 prozent": "heizungsgesetz-betrug#Was ist passiert"
+  - "gebäudeenergiegesetz": "heizungsgesetz-betrug#Was ist passiert"
+  - "geg": "heizungsgesetz-betrug#Was ist passiert"
+  - "brandmauer": "merz-und-cdu#EVP Brandmauer gefallen"
+  - "weber": "merz-und-cdu#EVP Brandmauer gefallen"
+  - "mietpreisbremse": "merz-und-cdu#Gebrochene Versprechen"
+  - "muslime": "merz-und-cdu#Counter-Beispiele"
+
+# ==================
+# Wirtschaft & Wohnen
+# ==================
+
+wirtschaft:
+  - "wohnungspolitik": "wirtschaft-housing#AfD Wohnungspolitik - Warum katastrophal"
+  - "sozialwohnung": "wirtschaft-housing#AfD Wohnungspolitik - Warum katastrophal"
+  - "markt regelt": "wirtschaft-housing#FDP Marktglaube - Warum gescheitert"
+  - "freier markt": "wirtschaft-housing#Der freie Markt Mythos"
+  - "deregulierung": "wirtschaft-housing#Der freie Markt Mythos"
+  - "texas": "wirtschaft-housing#Der freie Markt Mythos"
+  - "houston": "wirtschaft-housing#Der freie Markt Mythos"
+  - "london": "wirtschaft-housing#Der freie Markt Mythos"
+  - "wien": "wirtschaft-housing#Best Practice - Was funktioniert"
+  - "singapur": "wirtschaft-housing#Best Practice - Was funktioniert"
+
+# ==================
+# False Equivalence
+# ==================
+
+equivalence:
+  - "beide seiten": "false-equivalence#Gewaltstatistiken - Die Zahlen"
+  - "linksextrem": "false-equivalence#Gewaltstatistiken - Die Zahlen"
+  - "antifa": "false-equivalence#Gewaltstatistiken - Die Zahlen"
+  - "hufeisen": "false-equivalence#Hufeisen-Theorie widerlegt"
+  - "gleich schlimm": "false-equivalence#Gewaltstatistiken - Die Zahlen"
+  - "normale partei": "false-equivalence#AfD ist keine normale Partei"
+
+# ==================
+# Bot-Taktiken
+# ==================
+
+bot_tactics:
+  - "define": "zinger-arsenal#Bot-Taktik-Killer"
+  - "definier": "zinger-arsenal#Bot-Taktik-Killer"
+  - "was ist ein nazi": "zinger-arsenal#Bot-Taktik-Killer"
+  - "nie gesagt": "afd-und-rechts#Deflection-Techniken erkennen"
+  - "aus dem kontext": "afd-und-rechts#Deflection-Techniken erkennen"
+  - "vor wahlen": "afd-und-rechts#Deflection-Techniken erkennen"
+  - "getriggert": "zinger-arsenal#Effort Shaming"
+  - "triggered": "zinger-arsenal#Effort Shaming"
+  - "emotional": "zinger-arsenal#Effort Shaming"
+  - "popcorn": "zinger-arsenal#Effort Shaming"
+  - "haha bot": "zinger-arsenal#Bot-Taktik-Killer"
+  - "russian bot": "zinger-arsenal#Bot-Taktik-Killer"
+
+# ==================
+# Klima
+# ==================
+
+klima:
+  - "klimawandel": "klima#Klimawandel ist real - Konsens"
+  - "klima hoax": "klima#Klimawandel ist real - Konsens"
+  - "co2": "klima#CO2 ist gut für Pflanzen"
+  - "klimahysterie": "klima#AfD Klimapolitik"
+  - "erneuerbare": "klima#Erneuerbare sind zu teuer"
+  - "windrad": "klima#AfD Klimapolitik"
+  - "kohle": "klima#AfD Klimapolitik"
+  - "klimaschutz arbeitsplätze": "klima#Klimaschutz zerstört Arbeitsplätze"
+  - "deutschland allein": "klima#Deutschland allein kann das Klima nicht retten"
+
+# ==================
+# Gender
+# ==================
+
+gender:
+  - "gender": "gender#Grundlagen - Was Wissenschaft sagt"
+  - "trans": "gender#Trans-Identität ist real"
+  - "geschlecht": "gender#Sex vs. Gender"
+  - "nur zwei": "gender#Sex vs. Gender"
+  - "ideologie": "gender#Das ist Ideologie keine Wissenschaft"
+  - "kinder trans": "gender#Kinder werden zu Trans gemacht"
+  - "toilette": "gender#Männer in Frauenräumen"
+  - "sport unfair": "gender#Trans-Frauen dominieren Frauensport"
+
+# ==================
+# Verkehr & Tempo 30
+# ==================
+
+verkehr:
+  - "tempo 30": "verkehr-tempo30#Luft ist sauber genug - Der 40-Grenzwert-Mythos"
+  - "tempo 50": "verkehr-tempo30#Luft ist sauber genug - Der 40-Grenzwert-Mythos"
+  - "mittlerer ring": "verkehr-umwelt#Case Study - München Landshuter Allee"
+  - "landshuter allee": "verkehr-umwelt#Case Study - München Landshuter Allee"
+  - "tempolimit": "verkehr-tempo30#Tempo 30 ruiniert den Verkehrsfluss"
+  - "stau": "verkehr-tempo30#Tempo 30 ruiniert den Verkehrsfluss"
+  - "lärm": "verkehr-umwelt#Lärm und Gesundheit"
+  - "verkehrslärm": "verkehr-umwelt#Lärm und Gesundheit"
+  - "bremsweg": "verkehr-tempo30#Sicherheit - Der Killer-Fakt"
+  - "fußgänger": "verkehr-tempo30#Sicherheit - Der Killer-Fakt"
+  - "verkehrstote": "verkehr-tempo30#Sicherheit - Der Killer-Fakt"
+  - "diesel fahrverbot": "verkehr-tempo30#War nur wegen Diesel-Fahrverbot - kann jetzt weg"
+  - "grenzwert": "verkehr-tempo30#Luft ist sauber genug - Der 40-Grenzwert-Mythos"
+  - "no2": "verkehr-tempo30#Luft ist sauber genug - Der 40-Grenzwert-Mythos"
+  - "stickoxid": "verkehr-tempo30#Luft ist sauber genug - Der 40-Grenzwert-Mythos"
+  - "nimby": "verkehr-umwelt#NIMBY-Deflection entlarven"
+  - "anwohner": "verkehr-umwelt#NIMBY-Deflection entlarven"
+  - "schikane": "verkehr-umwelt#Politischer Opportunismus"
+  - "autofahrer": "verkehr-umwelt#Politischer Opportunismus"
+  - "reiter": "verkehr-umwelt#Die Reiter-Posse (Januar/Februar 2026)"
+  - "wahlkampf": "verkehr-umwelt#Die Reiter-Posse (Januar/Februar 2026)"
+
+# ==================
+# Quick One-Liners (für sofortige Response)
+# ==================
+
+one_liners:
+  - "höcke faschist": "one-liners#Höcke Faschist"
+  - "beide seiten": "one-liners#Both Sides"
+  - "nato versprochen": "one-liners#NATO-Versprechen"
+  - "markt regelt": "one-liners#Markt regelt"
+  - "define nazi": "one-liners#Define Nazi"
+  - "du bist getriggert": "one-liners#Triggered"
+  - "klima hysterie": "one-liners#Klima"
+  - "gender ideologie": "one-liners#Gender"
+  - "grenzwert eingehalten": "one-liners#Grenzwert eingehalten"
+  - "mega stau": "one-liners#Mega-Stau"
+  - "lärm egal": "one-liners#Lärm egal"
+  - "kind straße": "one-liners#Kind auf der Straße"
+  - "nimby one-liner": "one-liners#NIMBYs"
+  - "schikane one-liner": "one-liners#Schikane"
+  - "who stammtisch": "one-liners#WHO Stammtisch"
+  - "heiz-hammer one-liner": "one-liners#Heiz-Hammer ist weg"
+  - "wärmepumpe unbezahlbar": "one-liners#Wärmepumpe unbezahlbar"
+  - "technologieoffenheit one-liner": "one-liners#Technologieoffenheit"
+  - "vs links one-liner": "one-liners#VS ist links"
+  - "kramer one-liner": "one-liners#Kramer Kommunist"
+  - "bevölkerungsaustausch one-liner": "one-liners#Bevölkerungsaustausch"
