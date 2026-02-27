@@ -61,6 +61,21 @@ tailwind.config = {
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59,130,246,0.08);
   }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  .loading-spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  .loading-steps {
+    animation: pulse 1.8s ease-in-out infinite;
+  }
 </style>
 </head>
 <body class="bg-[#f8fafc] text-gray-800 min-h-screen font-sans antialiased">
@@ -112,6 +127,17 @@ tailwind.config = {
     Konter generieren
   </button>
 
+  <!-- Loading -->
+  <div id="loading-bar" class="hidden mt-4">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-3">
+      <div class="loading-spinner" style="border-color: rgba(26,39,68,0.2); border-top-color: #1a2744; width: 20px; height: 20px;"></div>
+      <div>
+        <div id="loading-step" class="text-sm font-medium text-gray-700 loading-steps">Durchsuche Datenbank...</div>
+        <div class="text-xs text-gray-400 mt-0.5">Kann einige Sekunden dauern</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Error -->
   <div id="error-msg" class="hidden mt-4 p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600"></div>
 
@@ -124,7 +150,7 @@ tailwind.config = {
         <button id="copy-btn" onclick="copyReply()" class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg text-gray-500 hover:text-gray-700 hover:border-gray-300 transition">Kopieren</button>
       </div>
     </div>
-    <div id="sources-section" class="bg-white rounded-xl shadow-sm p-5">
+    <div id="sources-section" class="bg-white rounded-xl shadow-sm p-5 overflow-hidden">
       <p id="sources-label" class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Quellen aus der Datenbank</p>
       <ul id="sources-list" class="space-y-2"></ul>
     </div>
@@ -278,6 +304,8 @@ tailwind.config = {
   var cfgPlatform   = document.getElementById('cfg-platform');
   var cfgGoal       = document.getElementById('cfg-goal');
   var cfgTone       = document.getElementById('cfg-tone');
+  var loadingBar    = document.getElementById('loading-bar');
+  var loadingStep   = document.getElementById('loading-step');
 
   // --- Render mode cards ---
 
@@ -394,17 +422,31 @@ tailwind.config = {
     submitBtn.disabled = true;
     submitBtn.classList.remove('bg-navy', 'hover:bg-[#243556]', 'active:bg-[#0f1a2e]');
     submitBtn.classList.add('bg-gray-400');
-    submitBtn.textContent = t.submit_loading;
+    // Add spinner via DOM (safe, no innerHTML)
+    while (submitBtn.firstChild) submitBtn.removeChild(submitBtn.firstChild);
+    var spinner = document.createElement('span');
+    spinner.className = 'loading-spinner';
+    submitBtn.appendChild(spinner);
+    submitBtn.appendChild(document.createTextNode(t.submit_loading));
     resultsEl.classList.add('hidden');
     resultsEl.classList.remove('animate-fade-up');
     errorEl.classList.add('hidden');
 
+    // Show loading bar with step indicator
+    loadingStep.textContent = currentLang === 'de' ? 'Durchsuche Datenbank\u2026' : 'Searching database\u2026';
+    loadingBar.classList.remove('hidden');
+    var stepTimer = setTimeout(function() {
+      loadingStep.textContent = currentLang === 'de' ? 'Generiere Antwort\u2026' : 'Generating response\u2026';
+    }, 3000);
+
     if (!API_URL) {
+      clearTimeout(stepTimer);
       setTimeout(function() {
+        loadingBar.classList.add('hidden');
         replyEl.textContent = t.demo_msg;
         while (sourcesListEl.firstChild) sourcesListEl.removeChild(sourcesListEl.firstChild);
         var li = document.createElement('li');
-        li.className = 'flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-500';
+        li.className = 'px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-500';
         li.textContent = t.demo_source;
         sourcesListEl.appendChild(li);
         showResults();
@@ -421,6 +463,9 @@ tailwind.config = {
       });
       var data = await res.json();
 
+      clearTimeout(stepTimer);
+      loadingBar.classList.add('hidden');
+
       if (data.error) throw new Error(data.error);
 
       replyEl.textContent = data.reply || t.no_reply;
@@ -430,14 +475,15 @@ tailwind.config = {
         sourcesSectionEl.style.display = '';
         data.sources.forEach(function(s) {
           var li = document.createElement('li');
-          li.className = 'flex justify-between items-center px-3 py-2 bg-gray-50 rounded-lg text-sm';
-          var fileSpan = document.createElement('span');
-          fileSpan.className = 'text-gray-600 truncate mr-3';
-          fileSpan.textContent = s.file + (s.section ? ' #' + s.section : '');
+          li.className = 'px-3 py-2.5 bg-gray-50 rounded-lg text-sm overflow-hidden';
+          var snippetDiv = document.createElement('div');
+          snippetDiv.className = 'text-gray-600 leading-snug';
+          snippetDiv.style.cssText = 'display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden';
+          snippetDiv.textContent = s.snippet || '...';
           var scoreSpan = document.createElement('span');
-          scoreSpan.className = 'text-blue-600 font-semibold whitespace-nowrap';
-          scoreSpan.textContent = Math.round(s.score * 100) + '%';
-          li.appendChild(fileSpan);
+          scoreSpan.className = 'text-xs text-blue-600 font-semibold mt-1 inline-block';
+          scoreSpan.textContent = Math.round(s.score * 100) + '% Relevanz';
+          li.appendChild(snippetDiv);
           li.appendChild(scoreSpan);
           sourcesListEl.appendChild(li);
         });
@@ -447,6 +493,8 @@ tailwind.config = {
 
       showResults();
     } catch(err) {
+      clearTimeout(stepTimer);
+      loadingBar.classList.add('hidden');
       errorEl.textContent = t.error_prefix + err.message;
       errorEl.classList.remove('hidden');
     }
