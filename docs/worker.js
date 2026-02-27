@@ -115,8 +115,12 @@ Generiere deine Antwort.`;
       // Step 3: Call Cloudflare Workers AI
       const reply = await callWorkersAI(env, systemPrompt, userPrompt);
 
-      // Step 4: Return results
-      const sources = konters.map(k => ({ file: k.file, section: k.section, score: k.score }));
+      // Step 4: Return results with text snippets instead of file paths
+      const sources = konters.map(k => {
+        const raw = (k.text || '').replace(/\n+/g, ' ').trim();
+        const snippet = raw.length > 140 ? raw.substring(0, 140) + '\u2026' : raw;
+        return { snippet, score: k.score };
+      });
 
       return json({ reply, sources, mode, kontersFound: konters.length });
 
